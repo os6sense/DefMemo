@@ -1,0 +1,81 @@
+
+defmodule Memoize do
+  alias Memoize.ResultTable
+   
+  defmacro defmem(header, do: body) do
+    { name, _meta, vars } = header
+     
+    quote do
+      def unquote(header) do
+        case ResultTable.get(unquote(name), unquote(vars)) do
+          { :hit, result } ->
+            result
+            :miss ->
+              result = unquote(body)
+              ResultTable.put(unquote(name), unquote(vars), result)
+              result
+        end
+      end
+    end
+  end
+   
+  # gen_server keeping results for function calls
+  defmodule ResultTable do
+    use GenServer
+     
+    def start_link do
+      #:gen_server.start_link({ :local, :result_table }, __MODULE__, [], [])
+      :gen_server.start_link({ :local, :result_table }, __MODULE__, HashDict.new, [])
+    end
+     
+    def init do
+      { :ok, HashDict.new }
+    end
+
+    def handle_call({ :get, fun, args }, _sender, dict) do
+      if HashDict.has_key?(dict, { fun, args }) do
+        { :reply, { :hit, dict[{ fun, args }] }, dict }
+      else
+        { :reply, :miss, dict }
+      end
+    end
+     
+    def handle_cast({ :put, fun, args, result }, dict) do
+      { :noreply, HashDict.put(dict, { fun, args }, result) }
+    end
+    def get(fun, args), do: :gen_server.call(:result_table, { :get, fun, args })
+    def put(fun, args, result), do: :gen_server.cast(:result_table, { :put, fun, args, result })
+  end
+end
+ 
+defmodule Fib do
+  require Memoize
+   
+  Memoize.defmem fibs(0), do: 0
+  Memoize.defmem fibs(1), do: 1
+  Memoize.defmem fibs(n), do: fibs(n - 1) + fibs(n - 2)
+end
+ 
+defmodule Time do
+  # measure running time of f
+  def running_time(f) do
+    t_before = :erlang.now()
+    return = f.()
+    t_after = :erlang.now()
+    {:timer.now_diff(t_after, t_before) }
+  end
+end
+ 
+# only oe instance is needed
+Memoize.ResultTable.start_link
+ 
+IO.puts "function -> {result, running time}"
+IO.puts "=================================="
+#IO.puts "fibs(20) -> #{inspect Time.running_time fn -> Fib.fibs(20) end}"
+#IO.puts "fibs(20) -> #{inspect Time.running_time fn -> Fib.fibs(20) end}"
+#IO.puts "fibs(30) -> #{inspect Time.running_time fn -> Fib.fibs(30) end}" 
+#IO.puts "fibs(30) -> #{inspect Time.running_time fn -> Fib.fibs(40) end}" 
+IO.puts "fibs(30) -> #{inspect Time.running_time fn -> Fib.fibs(10_000) end}" 
+IO.puts "fibs(30) -> #{inspect Time.running_time fn -> Fib.fibs(10_000) end}" 
+
+IO.inspect Fib.fibs(10_000)
