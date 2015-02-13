@@ -5,9 +5,12 @@ defmodule MemoizeTest do
 
   doctest Memoize
 
+  #setup do
+    #Memoize.start_link
+  #end
+
   test "The Proof Is In The Pudding" do
     Memoize.start_link
-
     puts "\nUNMEMOIZED VS MEMOIZED "
     puts "fib"
     puts "function -> {result, running time(μs)}"
@@ -36,15 +39,16 @@ end
 
 defmodule Memoize.ResultTableTest do
   use ExUnit.Case
+
   test "#Memoize.ResultTable.get returns {:miss, nil} for unmemo'd result" do
     Memoize.start_link
-    assert Memoize.ResultTable.get(:"Elixir.FibMemo.fibs", [20]) == {:miss, nil}
+    assert Memoize.ResultTable.GS.get(:"Elixir.FibMemo.fibs", [20]) == {:miss, nil}
   end
 
   test "#Memoize.ResultTable.get returns {:hit, result} for a memod result" do
     Memoize.start_link
     FibMemo.fibs(20)
-    assert {:hit, 6765} == Memoize.ResultTable.get(:"Elixir.FibMemo.fibs", [20]) 
+    assert {:hit, 6765} == Memoize.ResultTable.GS.get(:"Elixir.FibMemo.fibs", [20]) 
   end
 
 

@@ -1,5 +1,8 @@
 
 defmodule Memoize do
+  alias Memoize.ResultTable.GS, as: ResultTable
+  defdelegate start_link, to: ResultTable
+
   @moduledoc ~S"""
     Adapted from : (Gustavo Brunoro) https://gist.github.com/brunoro/6159378
 
@@ -8,9 +11,6 @@ defmodule Memoize do
 
     # See tests and test_helper for examples.
   """
-  alias Memoize.ResultTable
-
-  defdelegate start_link, to: ResultTable
 
   @doc ~S"""
     Defines a function as being memoized. Note that Memoize.start_link 
@@ -32,15 +32,18 @@ defmodule Memoize do
       end
     end
   end
-   
-  defmodule ResultTableETS do
-     
+end
 
+defmodule Memoize.ResultTable do
+    use Behaviour
+    defcallback start_link :: any | nil
+    defcallback get(fun :: Fun, args :: List) :: any
+    defcallback put(fun :: Fun, args :: List, result :: any) :: any
+end
 
-  end
+defmodule Memoize.ResultTable.GS do
+    @behaviour Memoize.ResultTable
 
-
-  defmodule ResultTable do
     @moduledoc ~S"""
       GenServer backing store for the results of the function calls.
     """
@@ -67,4 +70,4 @@ defmodule Memoize do
       do: { :noreply, HashDict.put(dict, { fun, args }, result) }
 
   end
-end
+
