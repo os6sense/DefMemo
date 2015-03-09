@@ -14,11 +14,11 @@ but different modules.
 Example
 =======
 
-  defmodule FibMemo do
-    import Memoize
+    defmodule FibMemo do
+      import Memoize
          
-    defmemo fibs(0), do: 0
-    defmemo fibs(1), do: 1
-    defmemo fibs(n), do: fibs(n - 1) + fibs(n - 2)
-  end
+      defmemo fibs(0), do: 0
+      defmemo fibs(1), do: 1
+      defmemo fibs(n), do: fibs(n - 1) + fibs(n - 2)
+    end
 
