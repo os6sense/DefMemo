@@ -17,7 +17,13 @@ defmodule Memoize do
     must be called before calling a method defined with defmacro.
 
     # Example:
-      defmemo fibs(0), do: 0
+      defmodule FibMemo do
+        import Memoize
+         
+        defmemo fibs(0), do: 0
+        defmemo fibs(1), do: 1
+        defmemo fibs(n), do: fibs(n - 1) + fibs(n - 2)
+      end
   """
   defmacro defmemo(head = {name, _meta, vars}, do: body) do
     quote do
