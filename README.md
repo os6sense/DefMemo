@@ -1,4 +1,4 @@
-Memoize
+DefMemo
 =======
 
 A simple memoization macro (defmemo) for Elixir.
