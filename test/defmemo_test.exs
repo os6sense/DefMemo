@@ -1,10 +1,9 @@
 defmodule Memoize.Test do
   use ExUnit.Case
 
-  import IO, only: [puts: 1]
-
   doctest Memoize
 
+  #import IO, only: [puts: 1]
   # TODO: Move to benchmark
   #@tag timeout: 100_000
   #test "The Proof Is In The Pudding" do

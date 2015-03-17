@@ -26,7 +26,7 @@ defmodule Memoize do
         defmemo fibs(n), do: fibs(n - 1) + fibs(n - 2)
       end
   """
-  defmacro defmemo(head = {:when, _, vars = [ {_, _, f_vars} | tail ] }, do: body) do
+  defmacro defmemo(head = {:when, _, vars = [ {_, _, f_vars} | _ ] }, do: body) do
     quote do
       def unquote(head) do
         sig = Module.concat(__MODULE__, "when #{unquote(Macro.to_string vars)}")
@@ -43,7 +43,7 @@ defmodule Memoize do
     end
   end
 
-  defmacro defmemo(head = {name, meta, vars}, do: body) do
+  defmacro defmemo(head = {name, _, vars}, do: body) do
     quote do
       def unquote(head) do
         sig = Module.concat(__MODULE__, unquote(name))
@@ -56,7 +56,7 @@ defmodule Memoize do
     end
   end
 
-  defmacro deathmemo(l) do
+  defmacro deathmemo(_) do
     quote do
       raise "Ryuk wants an apple!"
     end
