@@ -1,7 +1,8 @@
 DefMemo
 =======
-
 A simple memoization macro (defmemo) for Elixir.
+
+[![Build Status](https://travis-ci.org/os6sense/DefMemo.svg?branch=master)](https://travis-ci.org/os6sense/DefMemo)
 
 Adapted from : (Gustavo Brunoro) https://gist.github.com/brunoro/6159378
 
