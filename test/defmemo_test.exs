@@ -1,13 +1,13 @@
-defmodule Memoize.Test do
+defmodule DefMemo.Test do
   use ExUnit.Case
 
-  doctest Memoize
+  doctest DefMemo
 
   #import IO, only: [puts: 1]
   # TODO: Move to benchmark
   #@tag timeout: 100_000
   #test "The Proof Is In The Pudding" do
-    #Memoize.start_link
+    #DefMemo.start_link
     #puts "\nUNMEMOIZED VS MEMOIZED "
     #puts "***********************"
     #puts "fib (unmemoized)"
@@ -25,7 +25,7 @@ defmodule Memoize.Test do
   #end
 
   test "identical function signatures in different modules return correct results" do
-    Memoize.start_link
+    DefMemo.start_link
 
     FibMemo.fibs(20)
     FibMemoOther.fibs(20)
@@ -35,7 +35,7 @@ defmodule Memoize.Test do
   end
 
   test "identical function names with different arities return correct results" do
-    Memoize.start_link
+    DefMemo.start_link
 
     FibMemo.fibs(20)
     FibMemoOther.fibs(20)
@@ -47,7 +47,7 @@ defmodule Memoize.Test do
   end
 
   test "identical function names with guard conditions return correct results" do
-    Memoize.start_link
+    DefMemo.start_link
 
     TestMemoWhen.fibs(20)
     TestMemoWhen.fibs("20")

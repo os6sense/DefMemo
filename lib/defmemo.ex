@@ -1,25 +1,25 @@
-defmodule Memoize do
+defmodule DefMemo do
 
-  alias Memoize.ResultTable.GS,     as: ResultTable
+  alias DefMemo.ResultTable.GS,     as: ResultTable
 
   defdelegate start_link, to: ResultTable
 
   @moduledoc ~S"""
     Adapted from : (Gustavo Brunoro) https://gist.github.com/brunoro/6159378
 
-    A simple Memoize macro, the main point of note being that it can
+    A simple DefMemo macro, the main point of note being that it can
     handle identical function signatures in differing modules.
 
     # See tests and test_helper for examples.
   """
 
   @doc """
-    Defines a function as being memoized. Note that Memoize.start_link 
+    Defines a function as being memoized. Note that DefMemo.start_link 
     must be called before calling a method defined with defmacro.
 
     # Example:
       defmodule FibMemo do
-        import Memoize
+        import DefMemo
          
         defmemo fibs(0), do: 0
         defmemo fibs(1), do: 1

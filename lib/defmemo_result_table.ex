@@ -1,4 +1,4 @@
-defmodule Memoize.ResultTable do
+defmodule DefMemo.ResultTable do
   use Behaviour
 
   defcallback start_link :: any | nil

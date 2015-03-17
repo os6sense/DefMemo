@@ -1,5 +1,5 @@
-defmodule Memoize.ResultTable.GS do
-  @behaviour Memoize.ResultTable
+defmodule DefMemo.ResultTable.GS do
+  @behaviour DefMemo.ResultTable
 
   @moduledoc """
     GenServer backing store for the results of the function calls.

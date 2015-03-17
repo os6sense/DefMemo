@@ -20,7 +20,7 @@ Example
 =======
 
     defmodule FibMemo do
-      import Memoize
+      import DefMemo
          
       defmemo fibs(0), do: 0
       defmemo fibs(1), do: 1

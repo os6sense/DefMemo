@@ -16,7 +16,7 @@ defmodule Fib do
 end
 
 defmodule FibMemo do
-  import Memoize
+  import DefMemo
    
   defmemo fibs(0), do: 0
   defmemo fibs(1), do: 1
@@ -24,7 +24,7 @@ defmodule FibMemo do
 end
 
 defmodule FibMemoOther do
-  import Memoize
+  import DefMemo
    
   defmemo fibs(0), do: "ZERO"
   defmemo fibs(1), do: "A NUMBER ONE"
@@ -34,7 +34,7 @@ defmodule FibMemoOther do
 end
 
 defmodule TestMemoWhen do
-  import Memoize
+  import DefMemo
 
   # nb, is binary also covers bitstring
   defmemo fibs(n) when is_binary(n), do: {:binary, n}
