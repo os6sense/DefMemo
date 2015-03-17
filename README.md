@@ -49,5 +49,6 @@ More or less what you would expect:
 TODO
 ====
 - Travis
+- Better docs
 - More tests (alwaaaays with the testing!)
-- fix the possible bug with Lists/Text (see above)
+- Redis Based ResultTable
