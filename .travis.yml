@@ -11,7 +11,7 @@ otp_release:
   - 17.4
 sudo: false 
 script:
-  - mix test.all
+  - mix test
 notifications:
   recipients:
     - leej@librely.com
