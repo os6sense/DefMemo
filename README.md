@@ -5,11 +5,16 @@ A simple memoization macro (defmemo) for Elixir.
 
 Adapted from : (Gustavo Brunoro) https://gist.github.com/brunoro/6159378
 
-I'm still learning Elixir and have a long way to go so I'm sure that this could
-be better implemented. I had come across a Gist from Gustavo Brunoro that 
-looked to cover want I wanted and have quickly updated it to Elixir 1.x while 
-also making sure that it doesn't memoize the results from identical signatures
-but different modules.
+I found Gustavo's Gist when looking at memoization and elixir and fixed it
+to work with version 1.0.x. Since then I've fixed a few of the problems with
+the original implementation:
+
+- will correctly memoize the results of functions with identical signatures 
+  but in different modules.
+
+- will work with 'when' guard clauses in function definitions.(That was fun!) 
+
+- Respects arity
 
 Example
 =======
@@ -22,3 +27,27 @@ Example
       defmemo fibs(n), do: fibs(n - 1) + fibs(n - 2)
     end
 
+Performance
+===========
+More or less what you would expect:
+
+    UNMEMOIZED VS MEMOIZED 
+    ***********************
+    fib (unmemoized)
+    function -> {result, running time(μs)}
+    ==================================
+    fibs(30) -> {832040, 31364}
+    fibs(30) -> {832040, 31281}
+
+    FibMemo (memoized)
+    ==================================
+    fibs(30) -> {832040, 975}
+    fibs(30) -> {832040, 8}
+    fibs(50) -> {12586269025, 176}
+    fibs(50) -> {12586269025, 7}
+
+TODO
+====
+- Travis
+- More tests (alwaaaays with the testing!)
+- fix the possible bug with Lists/Text (see above)
