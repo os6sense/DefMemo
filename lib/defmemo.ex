@@ -30,10 +30,7 @@ defmodule DefMemo do
     quote do
       def unquote(head) do
         sig = Module.concat(__MODULE__, "when #{unquote(Macro.to_string vars)}")
-        args = unquote(f_vars)# Enum.map(unquote(f_vars), fn(v) -> v end)
-        #args = Enum.map(unquote(f_vars), fn(v) -> v end) 
-        #IO.puts inspect "*******#{sig}"
-        #IO.puts inspect "*******#{args}"
+        args = unquote(f_vars)
 
         case ResultTable.get(sig, args) do
           { :hit, value }   -> value
