@@ -51,8 +51,9 @@ TODO
 ====
 - Better docs
 - More tests (alwaaaays with the testing!)
+
 - ~~Redis Based ResultTable~~
 - I've been playing with this - obviously there are limitations on type and it's
   slower than gen server but there are of course circumstances where it could 
-  be useful ... 
+  be useful but for the most part its not a good "fit".
 
