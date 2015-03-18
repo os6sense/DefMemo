@@ -16,6 +16,7 @@ defmodule Memoize.Mixfile do
 
   defp deps do
     []
+    #[{ :exredis, ">= 0.1.1 "}]
   end
 
   defp description do

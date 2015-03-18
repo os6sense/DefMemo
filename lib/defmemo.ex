@@ -34,7 +34,7 @@ defmodule DefMemo do
 
         case ResultTable.get(sig, args) do
           { :hit, value }   -> value
-          { :miss, nil }    -> ResultTable.put sig, args, unquote(body)
+          { :miss, nil }    -> ResultTable.put(sig, args, unquote(body))
         end
       end
     end
@@ -47,7 +47,7 @@ defmodule DefMemo do
 
         case ResultTable.get(sig, unquote(vars)) do
           { :hit, value } -> value
-          { :miss, nil }  -> ResultTable.put sig, unquote(vars), unquote(body)
+          { :miss, nil }  -> ResultTable.put(sig, unquote(vars), unquote(body)) 
         end
       end
     end

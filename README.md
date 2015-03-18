@@ -49,7 +49,10 @@ More or less what you would expect:
 
 TODO
 ====
-- Travis
 - Better docs
 - More tests (alwaaaays with the testing!)
-- Redis Based ResultTable
+- ~~Redis Based ResultTable~~
+- I've been playing with this - obviously there are limitations on type and it's
+  slower than gen server but there are of course circumstances where it could 
+  be useful ... 
+
