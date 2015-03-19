@@ -20,12 +20,19 @@ defmodule DefMemo.ResultTable.GS do
   end
 
   def handle_call({ :get, fun, args }, _sender, dict) do
-     if (status = HashDict.fetch(dict, { fun, args })) == :error, 
-      do: { :reply, { :miss, nil }, dict }, 
-      else: { :reply, { :hit, elem(status, 1) }, dict }
+    reply(HashDict.fetch(dict, { fun, args }), dict)
   end
    
   def handle_cast({ :put, fun, args, result }, dict) do
     { :noreply,  HashDict.put(dict, { fun, args }, result) }
   end
+
+  defp reply(:error, dict) do
+    { :reply, { :miss, nil }, dict }
+  end
+
+  defp reply({:ok, val}, dict) do
+   { :reply, { :hit, val }, dict }
+  end
+
 end

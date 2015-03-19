@@ -53,7 +53,8 @@ Example
 
 Performance
 ===========
-More or less what you would expect:
+As you would expect for something like fibs, memoization provides dramatic
+performance improvements:
 
     UNMEMOIZED VS MEMOIZED 
     ***********************
@@ -69,6 +70,8 @@ More or less what you would expect:
     fibs(30) -> {832040, 3}
     fibs(50) -> {12586269025, 103}
     fibs(50) -> {12586269025, 3}
+
+Note that these have also improved from version 0.1 to 0.1.1
 
 TODO
 ====
