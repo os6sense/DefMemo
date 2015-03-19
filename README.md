@@ -1,6 +1,6 @@
 DefMemo
 =======
-A simple memoization macro (defmemo) for Elixir.
+A memoization macro (defmemo) for Elixir.
 
 [![Build Status](https://travis-ci.org/os6sense/DefMemo.svg?branch=master)](https://travis-ci.org/os6sense/DefMemo)
 
@@ -17,13 +17,16 @@ the original implementation:
 
 - Added lots of lovely tests.
 
-
 Usage
 =====
 
 Add defmemo to your mix.exs file:
 
     {:defmemo, "~> 0.1.0"}
+
+And run:
+  
+    mix deps.get
 
 Before *using* a defmemo'd function start_link must be called. e.g. 
 
@@ -43,7 +46,7 @@ Example
       defmemo fibs(1), do: 1
       defmemo fibs(n), do: fibs(n - 1) + fibs(n - 2)
 
-      def fib_10
+      def fib_10 do
         fibs(10)
       end
     end
@@ -69,12 +72,15 @@ More or less what you would expect:
 
 TODO
 ====
-- Supervisor
-- Better documentation
+- Add test for supervisor crashing.
+- Look at injecting the type of result table used.
+- Better documentation.
 - More tests (alwaaaays with the testing!)
+- Test with some biger data (e.g. for something like web crawling)
 
-- ~~Redis Based ResultTable~~
-- ~~I've been playing with this - obviously there are limitations on type and
-  it's slower than gen server but there are of course circumstances where it
-  could be useful but for the most part its not a good "fit".~~
+- ~~Supervisor ~~
+- ~~Redis Based ResultTable - I've been playing with this - obviously there are
+  limitations on type and it's slower than gen server but there are of course
+  circumstances where it could be useful but for the most part its not a good
+  "fit".~~
 
