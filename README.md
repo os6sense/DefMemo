@@ -13,9 +13,25 @@ the original implementation:
 - will correctly memoize the results of functions with identical signatures 
   but in different modules.
 
-- will work with 'when' guard clauses in function definitions.(That was fun!) 
+- will work with 'when' guard clauses in function definitions. (That was fun!) 
 
-- Respects arity
+- Added lots of lovely tests.
+
+
+Usage
+=====
+
+Add defmemo to your mix.exs file:
+
+    {:defmemo, "~> 0.1.0"}
+
+Before *using* a defmemo'd function start_link must be called. e.g. 
+
+  DefMemo.start_link
+
+or you can add :defmemo into the applications section of your mix.exs:
+
+    [applications: [:logger, :defmemo]]
 
 Example
 =======
@@ -26,6 +42,10 @@ Example
       defmemo fibs(0), do: 0
       defmemo fibs(1), do: 1
       defmemo fibs(n), do: fibs(n - 1) + fibs(n - 2)
+
+      def fib_10
+        fibs(10)
+      end
     end
 
 Performance
@@ -49,7 +69,8 @@ More or less what you would expect:
 
 TODO
 ====
-- Better docs
+- Supervisor
+- Better documentation
 - More tests (alwaaaays with the testing!)
 
 - ~~Redis Based ResultTable~~
