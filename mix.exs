@@ -2,7 +2,7 @@ defmodule Memoize.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :memoize,
+    [app: :defmemo,
      version: "0.1.0",
      elixir: "~> 1.0",
      description: description,
@@ -11,12 +11,13 @@ defmodule Memoize.Mixfile do
   end
 
   def application do
-    []
+    [
+     mod: {DefMemo, []}
+    ]
   end
 
   defp deps do
     []
-    #[{ :exredis, ">= 0.1.1 "}]
   end
 
   defp description do
@@ -30,7 +31,7 @@ defmodule Memoize.Mixfile do
      files: ["lib", "priv", "mix.exs", "README*", "readme*", "LICENSE*", "license*"],
      contributors: ["Adrian Lee", "(Adapted from work by Gustavo Brunoro)"],
      licenses: ["MIT"],
-     links: %{"GitHub" => "https://github.com/ericmj/postgrex"}
+     links: %{"GitHub" => "https://github.com/os6sense/DefMemo"}
     ]
 
   end

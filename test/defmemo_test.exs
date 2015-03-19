@@ -1,14 +1,10 @@
 defmodule DefMemo.Test do
   use ExUnit.Case
 
-  doctest DefMemo
-
   import IO, only: [puts: 1]
 
   @tag timeout: 100_000
   test "The Proof Is In The Pudding" do
-    DefMemo.start_link
-  
     puts "\nUNMEMOIZED VS MEMOIZED "
     puts "***********************"
     puts "fib (unmemoized)"
@@ -26,18 +22,14 @@ defmodule DefMemo.Test do
   end
 
   test "identical function signatures in different modules return correct results" do
-    DefMemo.start_link
-
     FibMemo.fibs(20)
-    #FibMemoOther.fibs(20)
+    FibMemoOther.fibs(20)
 
     assert FibMemo.fibs(20) == 6765
-    #assert FibMemoOther.fibs(20) == "THE NUMBER 20 IS BORING"
+    assert FibMemoOther.fibs(20) == "THE NUMBER 20 IS BORING"
   end
 
   test "identical function names with different arities return correct results" do
-    DefMemo.start_link
-
     FibMemo.fibs(20)
     FibMemoOther.fibs(20)
     FibMemoOther.fibs(20, 21)
@@ -48,8 +40,6 @@ defmodule DefMemo.Test do
   end
 
   test "identical function names with guard conditions return correct results" do
-    DefMemo.start_link
-
     TestMemoWhen.fibs(20)
     TestMemoWhen.fibs("20")
     TestMemoWhen.fibs([1, 2, 3])

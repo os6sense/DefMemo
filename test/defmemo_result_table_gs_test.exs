@@ -10,21 +10,16 @@ defmodule DefMemo.ResultTable.GS.Test do
 
   # === Basic Tests
   test "returns {:miss, nil} for unmemoed result" do
-    DefMemo.start_link
-    assert RT.get(:"Elixir.FibMemo.fibs", [20]) == {:miss, nil}
+    assert RT.get(:"Elixir.FibMemo.fibs", [100]) == {:miss, nil}
   end
 
   test "returns {:hit, result} for a memo'd result" do
-    DefMemo.start_link
-
     FibMemo.fibs(20)
     assert RT.get(:"Elixir.FibMemo.fibs", [20])  == {:hit, 6765} 
   end
 
   # Drying up the tests
   defp do_is_test(is_name, atom,  test_value) do
-    DefMemo.start_link
-
     TestMemoWhen.fibs(test_value)
     assert RT.get(:"#{@fstr} #{is_name}(n)]", [test_value]) == {:hit, {atom, test_value} } 
   end
@@ -84,7 +79,6 @@ defmodule DefMemo.ResultTable.GS.Test do
   end
 
   test "#DefMemo.ResultTable.get returns correctly when is_list and is_binary" do
-    DefMemo.start_link
     TestMemoWhen.fibs([1, 2, 3], "TEST")
     assert RT.get(:"Elixir.TestMemoWhen.when [fibs(n, x), is_list(n) and is_binary(x)]", [[1, 2, 3], "TEST"]) == {:hit, {[1, 2, 3], "TEST"} } 
   end

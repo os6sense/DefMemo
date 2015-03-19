@@ -1,10 +1,5 @@
 defmodule DefMemo do
-
-  alias DefMemo.ResultTable.GS,     as: ResultTable
-
-  defdelegate start_link, to: ResultTable
-
-  @moduledoc ~S"""
+  @moduledoc """
     Adapted from : (Gustavo Brunoro) https://gist.github.com/brunoro/6159378
 
     A simple DefMemo macro, the main point of note being that it can
@@ -12,6 +7,21 @@ defmodule DefMemo do
 
     # See tests and test_helper for examples.
   """
+  use Application
+
+  def start(_type, _args) do
+    import Supervisor.Spec, warn: false
+
+    children = [ worker(DefMemo.ResultTable.GS, []) ]
+
+    Supervisor.start_link(children, 
+                            [strategy: :one_for_one, 
+                            name: DefMemo.ResultTable.Supervisor])
+  end
+
+  alias DefMemo.ResultTable.GS,     as: ResultTable
+
+  defdelegate start_link,           to: ResultTable
 
   @doc """
     Defines a function as being memoized. Note that DefMemo.start_link 
