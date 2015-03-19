@@ -6,22 +6,24 @@ defmodule DefMemo.ResultTable.GS.Test do
   """
   alias DefMemo.ResultTable.GS, as: RT
 
-  @fstr "Elixir.TestMemoWhen.when [fibs(n),"
+  @fstr {:"Elixir.TestMemoWhen", :fibs}
+
+  @fib_memo {:"Elixir.FibMemo", :fibs}
 
   # === Basic Tests
   test "returns {:miss, nil} for unmemoed result" do
-    assert RT.get(:"Elixir.FibMemo.fibs", [100]) == {:miss, nil}
+    assert RT.get(@fib_memo, [100]) == {:miss, nil}
   end
 
   test "returns {:hit, result} for a memo'd result" do
     FibMemo.fibs(20)
-    assert RT.get(:"Elixir.FibMemo.fibs", [20])  == {:hit, 6765} 
+    assert RT.get(@fib_memo, [20])  == {:hit, 6765} 
   end
 
   # Drying up the tests
   defp do_is_test(is_name, atom,  test_value) do
     TestMemoWhen.fibs(test_value)
-    assert RT.get(:"#{@fstr} #{is_name}(n)]", [test_value]) == {:hit, {atom, test_value} } 
+    assert RT.get(@fstr, [test_value]) == {:hit, {atom, test_value} } 
   end
 
   test "returns correct result when is_binary" do
@@ -55,7 +57,7 @@ defmodule DefMemo.ResultTable.GS.Test do
   test "functions can be memoized!" do
     test_value = fn(a) -> a * 2 end
     do_is_test("is_function", :function, test_value)
-    {:hit, {:function, fnc}} = RT.get(:"#{@fstr} is_function(n)]", [test_value] ) 
+    {:hit, {:function, fnc}} = RT.get(@fstr, [test_value] ) 
     # functions can be memoized!? Useful if the key isnt the function itself...
     assert fnc.(2) == 4 
   end
@@ -80,6 +82,6 @@ defmodule DefMemo.ResultTable.GS.Test do
 
   test "#DefMemo.ResultTable.get returns correctly when is_list and is_binary" do
     TestMemoWhen.fibs([1, 2, 3], "TEST")
-    assert RT.get(:"Elixir.TestMemoWhen.when [fibs(n, x), is_list(n) and is_binary(x)]", [[1, 2, 3], "TEST"]) == {:hit, {[1, 2, 3], "TEST"} } 
+    assert RT.get(@fstr, [[1, 2, 3], "TEST"]) == {:hit, {[1, 2, 3], "TEST"} } 
   end
 end

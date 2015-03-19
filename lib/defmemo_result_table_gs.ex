@@ -20,9 +20,9 @@ defmodule DefMemo.ResultTable.GS do
   end
 
   def handle_call({ :get, fun, args }, _sender, dict) do
-    if HashDict.has_key?(dict, { fun, args }),
-      do:   { :reply, { :hit, dict[{  fun, args }] }, dict },
-      else: { :reply, { :miss, nil }, dict } 
+     if (status = HashDict.fetch(dict, { fun, args })) == :error, 
+      do: { :reply, { :miss, nil }, dict }, 
+      else: { :reply, { :hit, elem(status, 1) }, dict }
   end
    
   def handle_cast({ :put, fun, args, result }, dict) do

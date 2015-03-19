@@ -36,10 +36,10 @@ defmodule DefMemo do
         defmemo fibs(n), do: fibs(n - 1) + fibs(n - 2)
       end
   """
-  defmacro defmemo(head = {:when, _, vars = [ {_, _, f_vars} | _ ] }, do: body) do
+  defmacro defmemo(head = {:when, _, vars = [ {f_name, _, f_vars} | _ ] }, do: body) do
     quote do
       def unquote(head) do
-        sig = Module.concat(__MODULE__, "when #{unquote(Macro.to_string vars)}")
+        sig = {__MODULE__, unquote(f_name)}
         args = unquote(f_vars)
 
         case ResultTable.get(sig, args) do
@@ -53,7 +53,7 @@ defmodule DefMemo do
   defmacro defmemo(head = {name, _, vars}, do: body) do
     quote do
       def unquote(head) do
-        sig = Module.concat(__MODULE__, unquote(name))
+        sig = {__MODULE__, unquote(name)}
 
         case ResultTable.get(sig, unquote(vars)) do
           { :hit, value } -> value
