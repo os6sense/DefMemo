@@ -28,7 +28,8 @@ And run:
   
     mix deps.get
 
-Before *using* a defmemo'd function start_link must be called. e.g. 
+Before *using* a defmemo'd function (it's fine to define them), start_link must
+be called. e.g. 
 
   DefMemo.start_link
 
@@ -71,7 +72,8 @@ performance improvements:
     fibs(50) -> {12586269025, 103}
     fibs(50) -> {12586269025, 3}
 
-Note that these have also improved from version 0.1 to 0.1.1
+Note that these have also improved from version 0.1 to 0.1.1. The above numbers
+are on the low end of the spectrum with access ranging from 2 to 15 μs for me.
 
 TODO
 ====
