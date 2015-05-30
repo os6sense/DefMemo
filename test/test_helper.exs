@@ -2,7 +2,7 @@ ExUnit.start()
 
 defmodule TimedFunction do
   def time(fun) do
-    {start, return, stop} = {:erlang.now(), fun.(), :erlang.now()}
+    {start, return, stop} = {:os.timestamp, fun.(), :os.timestamp}
     {return, :timer.now_diff(stop, start) }
   end
 end
@@ -17,7 +17,7 @@ end
 
 defmodule FibMemo do
   import DefMemo
-   
+
   defmemo fibs(0), do: 0
   defmemo fibs(1), do: 1
   defmemo fibs(n), do: fibs(n - 1) + fibs(n - 2)
@@ -25,7 +25,7 @@ end
 
 defmodule FibMemoOther do
   import DefMemo
-   
+
   defmemo fibs(0), do: "ZERO"
   defmemo fibs(1), do: "A NUMBER ONE"
   defmemo fibs(2), do: "A NUMBER TWO!!"
