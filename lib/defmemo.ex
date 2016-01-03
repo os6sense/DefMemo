@@ -14,8 +14,8 @@ defmodule DefMemo do
 
     children = [ worker(DefMemo.ResultTable.GS, []) ]
 
-    Supervisor.start_link(children, 
-                            [strategy: :one_for_one, 
+    Supervisor.start_link(children,
+                            [strategy: :one_for_one,
                             name: DefMemo.ResultTable.Supervisor])
   end
 
@@ -24,13 +24,13 @@ defmodule DefMemo do
   defdelegate start_link,           to: ResultTable
 
   @doc """
-    Defines a function as being memoized. Note that DefMemo.start_link 
+    Defines a function as being memoized. Note that DefMemo.start_link
     must be called before calling a method defined with defmacro.
 
     # Example:
       defmodule FibMemo do
         import DefMemo
-         
+
         defmemo fibs(0), do: 0
         defmemo fibs(1), do: 1
         defmemo fibs(n), do: fibs(n - 1) + fibs(n - 2)
@@ -57,7 +57,7 @@ defmodule DefMemo do
 
         case ResultTable.get(sig, unquote(vars)) do
           { :hit, value } -> value
-          { :miss, nil }  -> ResultTable.put(sig, unquote(vars), unquote(body)) 
+          { :miss, nil }  -> ResultTable.put(sig, unquote(vars), unquote(body))
         end
       end
     end

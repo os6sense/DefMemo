@@ -17,8 +17,8 @@ defmodule DefMemo.Test do
     puts "=================================="
     puts "fibs(30) -> #{inspect TimedFunction.time fn -> FibMemo.fibs(30) end}"
     puts "fibs(30) -> #{inspect TimedFunction.time fn -> FibMemo.fibs(30) end}"
-    puts "fibs(50) -> #{inspect TimedFunction.time fn -> FibMemo.fibs(50) end}" 
-    puts "fibs(50) -> #{inspect TimedFunction.time fn -> FibMemo.fibs(50) end}" 
+    puts "fibs(50) -> #{inspect TimedFunction.time fn -> FibMemo.fibs(50) end}"
+    puts "fibs(50) -> #{inspect TimedFunction.time fn -> FibMemo.fibs(50) end}"
   end
 
   test "identical function signatures in different modules return correct results" do

@@ -5,15 +5,15 @@ defmodule DefMemo.ResultTable.GS do
     GenServer backing store for the results of the function calls.
   """
   use GenServer
-   
-  def start_link do 
+
+  def start_link do
     GenServer.start_link(__MODULE__, Map.new, name: :result_table)
   end
-   
+
   def get(fun, args) do
     GenServer.call(:result_table, { :get, fun, args })
   end
-    
+
   def put(fun, args, result) do
     GenServer.cast(:result_table, { :put, fun, args, result })
     result
@@ -22,9 +22,9 @@ defmodule DefMemo.ResultTable.GS do
   def handle_call({ :get, fun, args }, _sender, map) do
     reply(Map.fetch(map, { fun, args }), map)
   end
-   
+
   def handle_cast({ :put, fun, args, result }, map) do
-    { :noreply,  Map.put(map, { fun, args }, result) }
+    { :noreply, Map.put(map, { fun, args }, result) }
   end
 
   defp reply(:error, map) do

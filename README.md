@@ -10,10 +10,10 @@ I found Gustavo's Gist when looking at memoization and elixir and fixed it
 to work with version 1.0.x. Since then I've fixed a few of the problems with
 the original implementation:
 
-- will correctly memoize the results of functions with identical signatures 
+- will correctly memoize the results of functions with identical signatures
   but in different modules.
 
-- will work with 'when' guard clauses in function definitions. (That was fun!) 
+- will work with 'when' guard clauses in function definitions. (That was fun!)
 
 - Added lots of lovely tests.
 
@@ -25,11 +25,11 @@ Add defmemo to your mix.exs file:
     {:defmemo, "~> 0.1.0"}
 
 And run:
-  
+
     mix deps.get
 
 Before *using* a defmemo'd function (it's fine to define them), start_link must
-be called. e.g. 
+be called. e.g.
 
   DefMemo.start_link
 
@@ -42,7 +42,7 @@ Example
 
     defmodule FibMemo do
       import DefMemo
-         
+
       defmemo fibs(0), do: 0
       defmemo fibs(1), do: 1
       defmemo fibs(n), do: fibs(n - 1) + fibs(n - 2)
@@ -57,7 +57,7 @@ Performance
 As you would expect for something like fibs, memoization provides dramatic
 performance improvements:
 
-    UNMEMOIZED VS MEMOIZED 
+    UNMEMOIZED VS MEMOIZED
     ***********************
     fib (unmemoized)
     function -> {result, running time(μs)}
