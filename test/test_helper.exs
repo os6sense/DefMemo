@@ -36,6 +36,7 @@ end
 defmodule TestMemoWhen do
   import DefMemo
 
+  defmemo fibs(n, x) when is_list(n) and is_binary(x), do: {n, x}
   # nb, is binary also covers bitstring
   defmemo fibs(n) when is_binary(n), do: {:binary, n}
   defmemo fibs(n) when is_boolean(n), do: {:boolean, n}
@@ -51,7 +52,6 @@ defmodule TestMemoWhen do
   defmemo fibs(n) when is_reference(n), do: {:reference, n}
   defmemo fibs(n) when is_tuple(n), do: {:tuple, n}
 
-  defmemo fibs(n, x) when is_list(n) and is_binary(x), do: {n, x}
   defmemo fibs(n), do: {:no_guard, n}
 end
 

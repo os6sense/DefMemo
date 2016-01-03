@@ -1,7 +1,7 @@
 
 defmodule DefMemo.ResultTable.GS.Test do
   use ExUnit.Case
-  """
+  @doc """
     Direct tests of the GenServer ResultTable.
   """
   alias DefMemo.ResultTable.GS, as: RT
@@ -17,13 +17,13 @@ defmodule DefMemo.ResultTable.GS.Test do
 
   test "returns {:hit, result} for a memo'd result" do
     FibMemo.fibs(20)
-    assert RT.get(@fib_memo, [20])  == {:hit, 6765} 
+    assert RT.get(@fib_memo, [20])  == {:hit, 6765}
   end
 
   # Drying up the tests
   defp do_is_test(is_name, atom,  test_value) do
     TestMemoWhen.fibs(test_value)
-    assert RT.get(@fstr, [test_value]) == {:hit, {atom, test_value} } 
+    assert RT.get(@fstr, [test_value]) == {:hit, {atom, test_value} }, is_name
   end
 
   test "returns correct result when is_binary" do
@@ -57,9 +57,9 @@ defmodule DefMemo.ResultTable.GS.Test do
   test "functions can be memoized!" do
     test_value = fn(a) -> a * 2 end
     do_is_test("is_function", :function, test_value)
-    {:hit, {:function, fnc}} = RT.get(@fstr, [test_value] ) 
+    {:hit, {:function, fnc}} = RT.get(@fstr, [test_value] )
     # functions can be memoized!? Useful if the key isnt the function itself...
-    assert fnc.(2) == 4 
+    assert fnc.(2) == 4
   end
 
   test "returns correctly when is_map" do
@@ -69,7 +69,7 @@ defmodule DefMemo.ResultTable.GS.Test do
   test "returns correctly when is_pid" do
     do_is_test("is_pid", :pid, self)
   end
-  
+
   test "returns correctly when is_port" do
   end
 
@@ -82,6 +82,6 @@ defmodule DefMemo.ResultTable.GS.Test do
 
   test "#DefMemo.ResultTable.get returns correctly when is_list and is_binary" do
     TestMemoWhen.fibs([1, 2, 3], "TEST")
-    assert RT.get(@fstr, [[1, 2, 3], "TEST"]) == {:hit, {[1, 2, 3], "TEST"} } 
+    assert RT.get(@fstr, [[1, 2, 3], "TEST"]) == {:hit, {[1, 2, 3], "TEST"} }
   end
 end
