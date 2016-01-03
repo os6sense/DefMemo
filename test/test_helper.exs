@@ -55,3 +55,21 @@ defmodule TestMemoWhen do
   defmemo fibs(n), do: {:no_guard, n}
 end
 
+defmodule TestMemoNormalized do
+  import DefMemo
+
+  defp normalize_case([x]), do: String.downcase(x)
+
+  defmemo slow_upper(s), normalize_case do
+    :timer.sleep(1)     # Could this be why is this code so slow?!
+    String.upcase(s)
+  end
+
+  defp normalize_many([numbers, multiply_instead]), do: [Enum.sort(numbers), multiply_instead]
+
+  defmemo slow_sum(n, multiply_instead), normalize_many do
+    :timer.sleep(1)
+    if multiply_instead, do: Enum.reduce(n, fn(x, acc) -> x * acc end), else: Enum.sum(n)
+  end
+
+end

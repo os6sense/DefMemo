@@ -48,4 +48,29 @@ defmodule DefMemo.Test do
     assert TestMemoWhen.fibs("20") == {:binary, "20"}
     assert TestMemoWhen.fibs([1, 2, 3]) == {:list, [1, 2, 3]}
   end
+
+  test "normalized function arguments return correct results" do
+
+    assert TestMemoNormalized.slow_upper("A") == TestMemoNormalized.slow_upper("a"), "single argument match"
+    assert TestMemoNormalized.slow_upper("A") != TestMemoNormalized.slow_upper("B"), "single argument mis-match"
+
+    assert TestMemoNormalized.slow_sum([1,2], false) == TestMemoNormalized.slow_sum([2,1], false), "multi-argument match"
+    assert TestMemoNormalized.slow_sum([1,2], true) != TestMemoNormalized.slow_sum([2,1], false), "multi-argument mis-match"
+
+  end
+
+  test "normalized arguments performance improves" do
+
+    {"AB", first_upper }  = TimedFunction.time fn -> TestMemoNormalized.slow_upper("Ab") end
+    {"AB", second_upper } = TimedFunction.time fn -> TestMemoNormalized.slow_upper("AB") end
+
+    assert first_upper >= second_upper, "Second run on similar slow_upper arguments is faster"
+
+    {9, first_sum }  = TimedFunction.time fn -> TestMemoNormalized.slow_sum([2,3,4], false) end
+    {9, second_sum } = TimedFunction.time fn -> TestMemoNormalized.slow_sum([4,2,3], false) end
+
+    assert first_sum >= second_sum, "Second run on similar slow_sum arguments is faster"
+
+  end
+
 end
