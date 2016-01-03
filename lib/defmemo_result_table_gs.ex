@@ -7,7 +7,7 @@ defmodule DefMemo.ResultTable.GS do
   use GenServer
    
   def start_link do 
-    GenServer.start_link(__MODULE__, HashDict.new, name: :result_table)
+    GenServer.start_link(__MODULE__, Map.new, name: :result_table)
   end
    
   def get(fun, args) do
@@ -19,20 +19,20 @@ defmodule DefMemo.ResultTable.GS do
     result
   end
 
-  def handle_call({ :get, fun, args }, _sender, dict) do
-    reply(HashDict.fetch(dict, { fun, args }), dict)
+  def handle_call({ :get, fun, args }, _sender, map) do
+    reply(Map.fetch(map, { fun, args }), map)
   end
    
-  def handle_cast({ :put, fun, args, result }, dict) do
-    { :noreply,  HashDict.put(dict, { fun, args }, result) }
+  def handle_cast({ :put, fun, args, result }, map) do
+    { :noreply,  Map.put(map, { fun, args }, result) }
   end
 
-  defp reply(:error, dict) do
-    { :reply, { :miss, nil }, dict }
+  defp reply(:error, map) do
+    { :reply, { :miss, nil }, map }
   end
 
-  defp reply({:ok, val}, dict) do
-   { :reply, { :hit, val }, dict }
+  defp reply({:ok, val}, map) do
+   { :reply, { :hit, val }, map }
   end
 
 end
