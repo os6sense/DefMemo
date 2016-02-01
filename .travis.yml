@@ -9,7 +9,7 @@ otp_release:
   - 17.0
   - 17.1
   - 17.4
-sudo: false 
+sudo: false
 notifications:
   recipients:
     - leej@librely.com

@@ -36,6 +36,7 @@ end
 defmodule TestMemoWhen do
   import DefMemo
 
+  defmemo fibs(n, x) when is_list(n) and is_binary(x), do: {n, x}
   # nb, is binary also covers bitstring
   defmemo fibs(n) when is_binary(n), do: {:binary, n}
   defmemo fibs(n) when is_boolean(n), do: {:boolean, n}
@@ -51,7 +52,24 @@ defmodule TestMemoWhen do
   defmemo fibs(n) when is_reference(n), do: {:reference, n}
   defmemo fibs(n) when is_tuple(n), do: {:tuple, n}
 
-  defmemo fibs(n, x) when is_list(n) and is_binary(x), do: {n, x}
   defmemo fibs(n), do: {:no_guard, n}
 end
 
+defmodule TestMemoNormalized do
+  import DefMemo
+
+  defp normalize_case([x]), do: String.downcase(x)
+
+  defmemo slow_upper(s), normalize_case do
+    :timer.sleep(1)     # Could this be why is this code so slow?!
+    String.upcase(s)
+  end
+
+  defp normalize_many([numbers, multiply_instead]), do: [Enum.sort(numbers), multiply_instead]
+
+  defmemo slow_sum(n, multiply_instead), normalize_many do
+    :timer.sleep(1)
+    if multiply_instead, do: Enum.reduce(n, fn(x, acc) -> x * acc end), else: Enum.sum(n)
+  end
+
+end

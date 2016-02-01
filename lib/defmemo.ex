@@ -14,8 +14,8 @@ defmodule DefMemo do
 
     children = [ worker(DefMemo.ResultTable.GS, []) ]
 
-    Supervisor.start_link(children, 
-                            [strategy: :one_for_one, 
+    Supervisor.start_link(children,
+                            [strategy: :one_for_one,
                             name: DefMemo.ResultTable.Supervisor])
   end
 
@@ -24,19 +24,33 @@ defmodule DefMemo do
   defdelegate start_link,           to: ResultTable
 
   @doc """
-    Defines a function as being memoized. Note that DefMemo.start_link 
+    Defines a function as being memoized. Note that DefMemo.start_link
     must be called before calling a method defined with defmacro.
 
     # Example:
       defmodule FibMemo do
         import DefMemo
-         
+
         defmemo fibs(0), do: 0
         defmemo fibs(1), do: 1
         defmemo fibs(n), do: fibs(n - 1) + fibs(n - 2)
       end
+
+    A second argument can be provided to normalize the arguments for
+    the memoization result lookup.  The original function arguments are
+    provided as a List to the normalization function.
+
+    # Example:
+      defmodule BadCaser do
+        defp normalize_case([x]), do: String.downcase(x)
+        defmemo slow_upper(s), normalize_case do: String.upcase(s)
+      end
+
+    This might realize time savings if `downcase` were significantly cheaper to
+    execute than `upcase` or space savings if a wide variety of mixed-case, yet
+    otherwise the same, strings were run through this code path.
   """
-  defmacro defmemo(head = {:when, _, vars = [ {f_name, _, f_vars} | _ ] }, do: body) do
+  defmacro defmemo(head = {:when, _, [ {f_name, _, f_vars} | _ ] }, do: body) do
     quote do
       def unquote(head) do
         sig = {__MODULE__, unquote(f_name)}
@@ -57,7 +71,36 @@ defmodule DefMemo do
 
         case ResultTable.get(sig, unquote(vars)) do
           { :hit, value } -> value
-          { :miss, nil }  -> ResultTable.put(sig, unquote(vars), unquote(body)) 
+          { :miss, nil }  -> ResultTable.put(sig, unquote(vars), unquote(body))
+        end
+      end
+    end
+  end
+
+  defmacro defmemo(head = {:when, _, [ {f_name, _, f_vars} | _ ] }, normalizer, do: body) do
+    quote do
+      def unquote(head) do
+        sig = {__MODULE__, unquote(f_name)}
+        args = unquote(f_vars) |> unquote(normalizer)
+
+        case ResultTable.get(sig, args) do
+          { :hit, value }   -> value
+          { :miss, nil }    -> ResultTable.put(sig, args, unquote(body))
+        end
+      end
+    end
+  end
+
+  defmacro defmemo(head = {name, _, vars}, normalizer, do: body) do
+    quote do
+      def unquote(head) do
+        sig = {__MODULE__, unquote(name)}
+
+        args = unquote(vars) |> unquote(normalizer)
+
+        case ResultTable.get(sig, args) do
+          { :hit, value } -> value
+          { :miss, nil }  -> ResultTable.put(sig, args, unquote(body))
         end
       end
     end
