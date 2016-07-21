@@ -20,6 +20,15 @@ defmodule DefMemo.ResultTable.GS.Test do
     assert RT.get(@fib_memo, [20])  == {:hit, 6765}
   end
 
+  test "delete removes a memo'd result" do
+    RT.delete(@fib_memo, [10])
+    assert RT.get(@fib_memo, [10]) == {:miss, nil}
+    FibMemo.fibs(10)
+    assert RT.get(@fib_memo, [10]) == {:hit, 55}
+    RT.delete(@fib_memo, [10])
+    assert RT.get(@fib_memo, [10]) == {:miss, nil}
+  end
+
   # Drying up the tests
   defp do_is_test(is_name, atom,  test_value) do
     TestMemoWhen.fibs(test_value)
