@@ -18,6 +18,10 @@ defmodule DefMemo.ResultTable.GS do
     GenServer.call(:result_table, { :delete, fun, args })
   end
 
+  def delete_all do
+    GenServer.call(:result_table, { :delete_all })
+  end
+
   def put(fun, args, result) do
     GenServer.cast(:result_table, { :put, fun, args, result })
     result
@@ -29,6 +33,10 @@ defmodule DefMemo.ResultTable.GS do
 
   def handle_call({ :delete, fun, args }, _sender, map) do
     reply({ :ok, nil }, Map.delete(map, { fun, args }))
+  end
+
+  def handle_call({ :delete_all }, _sender, _map) do
+    reply({ :ok, nil }, Map.new)
   end
 
   def handle_cast({ :put, fun, args, result }, map) do
