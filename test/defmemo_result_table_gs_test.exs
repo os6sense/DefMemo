@@ -29,6 +29,19 @@ defmodule DefMemo.ResultTable.GS.Test do
     assert RT.get(@fib_memo, [10]) == {:miss, nil}
   end
 
+  test "delete_all removed all memo'd results" do
+    RT.delete_all
+    assert RT.get(@fib_memo, [10]) == {:miss, nil}
+    assert RT.get(@fib_memo, [20]) == {:miss, nil}
+    FibMemo.fibs(10)
+    FibMemo.fibs(20)
+    assert RT.get(@fib_memo, [10]) == {:hit, 55}
+    assert RT.get(@fib_memo, [20]) == {:hit, 6765}
+    RT.delete_all
+    assert RT.get(@fib_memo, [10]) == {:miss, nil}
+    assert RT.get(@fib_memo, [20]) == {:miss, nil}
+  end
+
   # Drying up the tests
   defp do_is_test(is_name, atom,  test_value) do
     TestMemoWhen.fibs(test_value)
